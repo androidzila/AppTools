@@ -1,0 +1,133 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: "com.jfrog.bintray"
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'volleycasing'
+
+    publishedGroupId = 'com.techexe.apptools'
+    libraryName = 'VolleyCasing'
+    artifact = 'utils'
+
+    libraryDescription = 'A wrapper for Facebook Native Like Button (LikeView) on Android'
+
+    siteUrl = 'https://github.com/androidzila/AppTools'
+    gitUrl = 'https://github.com/androidzila/AppTools.git'
+
+    libraryVersion = '1.0.0'
+
+    developerId = 'techexe'
+    developerName = 'Jaimin Patel'
+    developerEmail = 'jaimin.developer@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.3"
+    defaultConfig {
+//        applicationId "com.techexe.volleycasing"
+        minSdkVersion 14
+        targetSdkVersion 25
+        versionCode 3
+        versionName "1.2"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.volley:volley:1.0.0'
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:multidex:1.0.1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    testCompile 'junit:junit:4.12'
+}
+
+
+
+def siteUrl = 'https://github.com/androidzila/AppTools'      // Homepage URL of the library
+def gitUrl = 'https://github.com/androidzila/AppTools.git'   // Git repository URL
+group = "com.techexe.apptools"                      // Maven Group ID for the artifact
+version = '1.0.0'
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+
+install {
+    repositories.mavenInstaller {
+        pom.project {
+            name 'AppTools'
+            description 'all tools available for app'
+            url 'https://github.com/androidzila/AppTools'
+            inceptionYear '2015'
+
+            packaging 'aar'
+            groupId 'com.techexe.apptools'
+            artifactId 'utils'
+            version '1.0.0'
+
+            licenses {
+                license {
+                    name 'The Apache Software License, Version 2.0'
+                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    distribution 'AppTools'
+                }
+            }
+            scm {
+                connection 'https://github.com/androidzila/AppTools.git'
+                url 'https://github.com/androidzila/AppTools'
+
+            }
+            developers {
+                developer {
+                    name 'Jaimin Patel'
+                }
+            }
+        }
+    }
+}
+
+bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+
+    configurations = ['archives']
+    pkg {
+        repo = "AppTools"
+        // it is the name that appears in bintray when logged
+        name = "apptools"
+        websiteUrl = siteUrl
+        vcsUrl = gitUrl
+        licenses = ["Apache-2.0"]
+        publish = true
+        version {
+            name = '1.0.0'
+            vcsTag = '1.0.0'
+            released  = new Date()
+            gpg {
+                sign = true //Determines whether to GPG sign the files. The default is false
+                passphrase = properties.getProperty("bintray.gpg.password")
+                //Optional. The passphrase for GPG signing'
+            }
+//            mavenCentralSync {
+//                sync = true //Optional (true by default). Determines whether to sync the version to Maven Central.
+//                user = properties.getProperty("bintray.oss.user") //OSS user token
+//                password = properties.getProperty("bintray.oss.password") //OSS user password
+//                close = '1' //Optional property. By default the staging repository is closed and artifacts are released to Maven Central. You can optionally turn this behaviour off (by puting 0 as value) and release the version manually.
+//            }
+        }
+    }
+}
