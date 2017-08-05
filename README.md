@@ -1,6 +1,5 @@
 # TECHEXE-AppTools
 
-[![N|Techexe](http://res.cloudinary.com/techexe/image/upload/v1501927533/cooltext253949971058893_myrlcg.png)]()
 
 
 android app custom library
